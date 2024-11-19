@@ -20,7 +20,7 @@ wire branch;
 
 MainDecoder md(op, memtoreg, memwrite, branch, alusrc, regdst, regwrite, jump, aluop);
 
-AluDecoder ad(funct, aluop, alucontrol);
+AluDecoder ad(.funct(funct), .aluop(aluop), .alucontrol(alucontrol));
 
 assign pcsrc = branch & zero;
 

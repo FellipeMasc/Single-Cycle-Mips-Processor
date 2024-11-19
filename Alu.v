@@ -2,28 +2,25 @@ module Alu (
 			input  [2:0]  inputULA, 
 			input  [31:0] srca,
 			input  [31:0] srcb,
-			output reg zero,
+			output zero,
 			output reg [31:0] outputULA);
 	
 
 always @(*) begin
-	if(inputULA == 4'b0010)
-		outputULA <= srca + srcb;
-	if(inputULA == 4'b0110)
-		outputULA <= srca - srcb;
-	if(inputULA == 4'b0000)
-		outputULA <= srca & srcb;
-	if(inputULA == 4'b0001)
-		outputULA <= srca | srcb;
-	if(inputULA == 4'b0111) begin
-		if (srca < srcb)
-			outputULA <= 1;
-		if (srca > srcb)
-			outputULA <= 0;
-		if (srca == srcb)
-			outputULA <= 0;
-	end
-	zero = outputULA == 0;
+        case (inputULA)
+            3'b010 : begin
+                outputULA = srca + srcb;
+            end 
+            3'b110 : begin
+                outputULA = srca - srcb;
+            end
+            3'b000 : outputULA = srca & srcb;
+            3'b001 : outputULA = srca | srcb;
+            3'b111 : outputULA = (srca < srcb) ? 32'b1 : 32'b0;
+            default: ;
+        endcase
 end
+
+assign zero = (outputULA) ? 1'b0 : 1'b1;
 
 endmodule

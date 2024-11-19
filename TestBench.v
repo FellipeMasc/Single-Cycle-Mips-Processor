@@ -8,11 +8,11 @@ module testbench();
 
 	Top dut(clk, reset, writedata, dataadr, memwrite);
 
-	initial begin
-		reset <= 1;
-		#22; 
-		reset <= 0;
-	end
+	// initial begin
+	// 	reset <= 1;
+	// 	#22; 
+	// 	reset <= 0;
+	// end
 
 	always begin
 		clk <= 1; 
@@ -21,9 +21,10 @@ module testbench();
 		#5;
 	end
 
-	always @ (negedge clk)
+	always @(posedge clk)
 		begin
 			if (memwrite) begin
+        $display("memwrite: %b, dataadr: %h, writedata: %h", memwrite, dataadr, writedata);
 				if (dataadr === 84 & writedata === 7) begin
 					$display ("Simulation succeeded");
 					$stop;
@@ -40,8 +41,8 @@ module testbench();
         $stop;
   end
 
-	initial begin
-        $monitor("Time: %0t | clk: %b | reset: %b | memwrite: %b | dataadr: %h | writedata: %h", 
-                 $time, clk, reset, memwrite, dataadr, writedata);
-  end
+	// initial begin
+  //       $monitor("Time: %0t | clk: %b | reset: %b | memwrite: %b | dataadr: %h | writedata: %h", 
+  //                $time, clk, reset, memwrite, dataadr, writedata);
+  // end
 endmodule

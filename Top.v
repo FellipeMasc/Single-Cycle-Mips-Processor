@@ -17,7 +17,7 @@ output memwrite);
 				.pc(pc),
 				.instr(instr)
     );
-	InstructionMemory imem(.a(pc[7:2]), .rd(instr));
+	InstructionMemory imem(.A(pc[7:2]), .RD(instr));
 	DataMemory dmem(.clk(clk), .we(memwrite), .a(dataadr), .wd(writedata),
 .rd(readdata));
 endmodule

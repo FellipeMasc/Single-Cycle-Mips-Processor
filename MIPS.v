@@ -14,14 +14,15 @@ wire memtoreg, alusrc, regdst, regwrite, jump, pcsrc, zero;
 
 wire [2:0] alucontrol;
 
-wire [5:0] op = instr[31:26];
-wire [5:0] funct = instr[5:0];
 
-Controller controller(op, funct, zero, 
-	memtoreg, memwrite, pcsrc, alusrc, regdst, regwrite, jump, alucontrol);
+Controller controller(.op(instr[31:26]), .funct(instr[5:0]), .zero(zero), 
+	.memtoreg(memtoreg), .memwrite(memwrite), .pcsrc(pcsrc), .alusrc(alusrc), .regdst(regdst), .regwrite(regwrite), .jump(jump), .alucontrol(alucontrol));
 
-DataPath datapath(clk, reset, memtoreg, pcsrc, alusrc, regdst, regwrite, jump, alucontrol, 
-	zero,pc, instr, aluout, writedata, readdata);
+DataPath datapath(.clk(clk), .reset(reset), .memtoreg(memtoreg), .pcsrc(pcsrc), .alusrc(alusrc), .regdst(regdst), .regwrite(regwrite), .jump(jump), .alucontrol(alucontrol), .zero(zero), .pc(pc), .instr(instr), .aluout(aluout), .writedata(writedata), .readdata(readdata));
+
+initial begin
+	$display("alucontrol: %b", alucontrol);
+end
 
 
 endmodule
