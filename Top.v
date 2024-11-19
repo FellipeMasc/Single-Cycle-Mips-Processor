@@ -2,13 +2,22 @@
 `include "InstructionMemory.v"
 `include "DataMemory.v"
 
-module top (input clk, reset,
-output [31:0] writedata, dataadr,
+module Top(input clk, reset,
+output [31:0] writedata, 
+output [31:0] dataadr,
 output memwrite);
 	wire [31:0] pc, instr, readdata;
-	Mips mips(clk, reset, pc, instr, memwrite, dataadr,
-	writedata, readdata);
-	InstructionMemory imem(pc[7:2], instr);
-	DataMemory dmem(clk, memwrite, dataadr, writedata,
-readdata);
+	Mips mips (
+        .clk(clk),
+        .reset(reset),
+        .memwrite(memwrite),
+				.aluout(dataadr),
+        .writedata(writedata),
+				.readdata(readdata),
+				.pc(pc),
+				.instr(instr)
+    );
+	InstructionMemory imem(.a(pc[7:2]), .rd(instr));
+	DataMemory dmem(.clk(clk), .we(memwrite), .a(dataadr), .wd(writedata),
+.rd(readdata));
 endmodule

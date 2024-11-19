@@ -1,18 +1,19 @@
 module MainDecoder(
 	input [5:0] op,
-	output reg memtoreg,
-	output reg memwrite,
-	output reg branch,
-	output reg alusrc,
-	output reg regdst,
-	output reg regwrite,
-	output reg jump,
-	output reg [1:0] aluop
+	output memtoreg,
+	output memwrite,
+	output branch,
+	output alusrc,
+	output regdst,
+	output regwrite,
+	output jump,
+	output [1:0] aluop
 );
 
-wire [8:0] controls;
+reg [8:0] controls;
 
 assign {regwrite, regdst, alusrc, branch, memwrite, memtoreg, jump, aluop} = controls;
+
 
 always @(*) begin
 	case (op)

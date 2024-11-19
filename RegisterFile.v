@@ -6,7 +6,7 @@ module RegisterFile(
 	output [31:0] rd1, rd2
 );
 
-wire [31:0] rf[31:0];
+reg [31:0] rf[31:0];
 
 always @(posedge clk) begin
 	if (we3) begin

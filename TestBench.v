@@ -5,19 +5,22 @@ module testbench();
 	reg reset;
 	wire [31:0] writedata, dataadr;
 	wire memwrite;
-	// instantiate device to be tested
+
 	Top dut(clk, reset, writedata, dataadr, memwrite);
-	// initialize test
-	initial
-	begin
-	reset <= 1; # 22; reset <= 0;
+
+	initial begin
+		reset <= 1;
+		#22; 
+		reset <= 0;
 	end
-	// generate clock to sequence tests
-	always
-	begin
-	clk <= 1; # 5; clk <= 0; # 5;
+
+	always begin
+		clk <= 1; 
+		#5; 
+		clk <= 0; 
+		#5;
 	end
-	// check results
+
 	always @ (negedge clk)
 		begin
 			if (memwrite) begin
@@ -30,4 +33,15 @@ module testbench();
 				end
 			end
 		end
+
+	initial begin
+        #10000; // Adjust the timeout value as needed
+        $display("Simulation timeout");
+        $stop;
+  end
+
+	initial begin
+        $monitor("Time: %0t | clk: %b | reset: %b | memwrite: %b | dataadr: %h | writedata: %h", 
+                 $time, clk, reset, memwrite, dataadr, writedata);
+  end
 endmodule

@@ -1,20 +1,23 @@
 `include "Controller.v"
 `include "DataPath.v"
 
-module MIPS(
+module Mips(
 	input clk, reset,
-	output reg [31:0] pc,
+	output [31:0] pc,
 	input [31:0] instr,
-	output reg memwrite,
-	output reg [31:0] aluout, writedata,
-	input [31:0] readdata,
+	output memwrite,
+	output [31:0] aluout, writedata,
+	input [31:0] readdata
 );
 
 wire memtoreg, alusrc, regdst, regwrite, jump, pcsrc, zero;
 
-reg [2:0] alucontrol;
+wire [2:0] alucontrol;
 
-Controller controller(instr[31:26], instr[5:0], zero, 
+wire [5:0] op = instr[31:26];
+wire [5:0] funct = instr[5:0];
+
+Controller controller(op, funct, zero, 
 	memtoreg, memwrite, pcsrc, alusrc, regdst, regwrite, jump, alucontrol);
 
 DataPath datapath(clk, reset, memtoreg, pcsrc, alusrc, regdst, regwrite, jump, alucontrol, 

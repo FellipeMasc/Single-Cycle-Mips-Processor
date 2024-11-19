@@ -16,11 +16,11 @@ always @(*) begin
 	if(inputULA == 4'b0001)
 		outputULA <= srca | srcb;
 	if(inputULA == 4'b0111) begin
-		if (a < b)
+		if (srca < srcb)
 			outputULA <= 1;
-		if (a > b)
+		if (srca > srcb)
 			outputULA <= 0;
-		if (a == b)
+		if (srca == srcb)
 			outputULA <= 0;
 	end
 	zero = outputULA == 0;
