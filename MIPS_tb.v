@@ -1,4 +1,4 @@
-`include "MIPS.v"
+`include "Mips.v"
 
 module tb;
 	

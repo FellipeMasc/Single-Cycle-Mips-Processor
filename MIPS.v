@@ -1,19 +1,24 @@
-`include "ULA.v"
-`include "ULAControl.v"
+`include "Controller.v"
+`include "DataPath.v"
 
-module MIPS(input             clk,
-			input      [0:1]  OpALU,
-			input      [0:5]  funct,
-			input      [0:31] a,
-			input      [0:31] b,
-			output     [0:31] outputULA);
-	
-	
-	wire [0:3] inputALU;
+module MIPS(
+	input clk, reset,
+	output reg [31:0] pc,
+	input [31:0] instr,
+	output reg memwrite,
+	output reg [31:0] aluout, writedata,
+	input [31:0] readdata,
+);
 
-	ULAControl uut_1(.clk(clk), .OpALU(OpALU), .funct(funct), .inputALU(inputALU));
-	
-	ULA uut_2(.clk(clk), .inputULA(inputALU), .a(a), .b(b), .outputULA(outputULA));
+wire memtoreg, alusrc, regdst, regwrite, jump, pcsrc, zero;
+
+reg [2:0] alucontrol;
+
+Controller controller(instr[31:26], instr[5:0], zero, 
+	memtoreg, memwrite, pcsrc, alusrc, regdst, regwrite, jump, alucontrol);
+
+DataPath datapath(clk, reset, memtoreg, pcsrc, alusrc, regdst, regwrite, jump, alucontrol, 
+	zero,pc, instr, aluout, writedata, readdata);
 
 
 endmodule
