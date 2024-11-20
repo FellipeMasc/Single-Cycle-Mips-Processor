@@ -1,26 +1,27 @@
-module Alu (
-			input  [2:0]  inputULA, 
-			input  [31:0] srca,
-			input  [31:0] srcb,
-			output zero,
-			output reg [31:0] outputULA);
-	
 
-always @(*) begin
-        case (inputULA)
+module ALU(
+    input       [31:0]  SrcA,
+    input       [31:0]  SrcB,
+    input       [2:0]   ALUControl,
+    output  reg [31:0]  ALUResult,
+    output              Zero
+);
+
+    always @(*) begin
+        case (ALUControl)
             3'b010 : begin
-                outputULA = srca + srcb;
+                ALUResult = SrcA + SrcB;
             end 
             3'b110 : begin
-                outputULA = srca - srcb;
+                ALUResult = SrcA - SrcB;
             end
-            3'b000 : outputULA = srca & srcb;
-            3'b001 : outputULA = srca | srcb;
-            3'b111 : outputULA = (srca < srcb) ? 32'b1 : 32'b0;
+            3'b000 : ALUResult = SrcA & SrcB;
+            3'b001 : ALUResult = SrcA | SrcB;
+            3'b111 : ALUResult = (SrcA < SrcB) ? 32'b1 : 32'b0;
             default: ;
         endcase
-end
+    end
 
-assign zero = (outputULA) ? 1'b0 : 1'b1;
+    assign Zero = (ALUResult) ? 1'b0 : 1'b1;
 
 endmodule
